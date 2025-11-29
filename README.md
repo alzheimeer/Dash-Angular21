@@ -2,7 +2,11 @@
 
 A premium, modern dashboard template built with Angular 21 and Tailwind CSS 4, featuring glassmorphism design, comprehensive authentication system, and dynamic integrations.
 
-## 🚀 Technologies Used
+## 🚀 Live Demo
+
+**[View Live Demo →](https://ecromero.github.io/dashboard-v21/)**
+
+## 🛠️ Technologies Used
 
 ### Core Framework
 
@@ -103,6 +107,26 @@ A premium, modern dashboard template built with Angular 21 and Tailwind CSS 4, f
    ```
    Production files will be in the `dist/` directory.
 
+## 🚀 Deployment
+
+This project uses **GitHub Actions** for automated deployment to GitHub Pages.
+
+### Automatic Deployment
+
+Every push to the `main` branch automatically triggers a build and deployment.
+
+### Manual Deployment
+
+You can also trigger a deployment manually from the Actions tab in GitHub.
+
+### Configuration
+
+The deployment is configured in `.github/workflows/deploy.yml` and uses:
+
+- Node.js 20
+- Angular production build
+- GitHub Pages deployment action
+
 ## 🛠️ Project Structure
 
 ```
@@ -188,19 +212,22 @@ This is a **premium commercial template**. Unauthorized use, distribution, or mo
 
 **To purchase a license, contact:** [Your contact information]
 
+For full license terms, see the [LICENSE](LICENSE) file.
+
 ---
 
 ## 🤝 Support
 
 For support, feature requests, or bug reports:
 
-- Email: niklaussmauricio@gmail.com
+- Email: [Your support email]
+- Documentation: [Your docs URL]
 
 ## 🔄 Version
 
 **Current Version**: 1.0.0  
 **Angular Version**: 21.x  
-**Last Updated**: November 2025
+**Last Updated**: November 2024
 
 ---
 
