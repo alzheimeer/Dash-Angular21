@@ -1,7 +1,8 @@
-import { Component, signal, inject } from '@angular/core';
+import { Component, signal, inject, computed } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { AuthService } from '../../../services/auth.service';
 
 @Component({
   selector: 'app-sidebar',
@@ -32,51 +33,51 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
         }
       </nav>
 
-      <!-- Integrations -->
-      <div class="mt-8">
-        <h3 class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Integrations</h3>
-        <div class="space-y-1">
-          <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-600 rounded-xl hover:bg-white/50 transition-all duration-200">
-            <div class="w-5 h-5 flex items-center justify-center">
-               <!-- Slack Icon Mock -->
-               <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-purple-500"><path d="M6 15a2 2 0 0 1-2 2 2 2 0 0 1-2-2 2 2 0 0 1 2-2h2v2zm1 0a2 2 0 0 1 2-2 2 2 0 0 1 2 2v5a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-5zm2-5a2 2 0 0 1-2-2 2 2 0 0 1 2-2h5a2 2 0 0 1 2 2 2 2 0 0 1-2 2H9zm0-1a2 2 0 0 1 2-2 2 2 0 0 1 2 2v2a2 2 0 0 1-2 2 2 2 0 0 1-2-2V9zm-5 2a2 2 0 0 1-2-2 2 2 0 0 1 2-2h2v2a2 2 0 0 1-2 2zm6 5a2 2 0 0 1-2-2 2 2 0 0 1 2-2h2v2a2 2 0 0 1-2 2z"/></svg>
-            </div>
-            Slack
-          </a>
-          <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-600 rounded-xl hover:bg-white/50 transition-all duration-200">
-            <div class="w-5 h-5 flex items-center justify-center">
-               <!-- Notion Icon Mock -->
-               <svg viewBox="0 0 24 24" fill="currentColor" class="w-4 h-4 text-black"><path d="M4.222 2.889A.889.889 0 0 0 3.333 3.778v16.444c0 .491.398.889.889.889h15.556a.889.889 0 0 0 .889-.889V3.778a.889.889 0 0 0-.889-.889H4.222zM17.111 18.222H6.889V5.778h10.222v12.444z"/></svg>
-            </div>
-            Notion
-          </a>
-          <button class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-500 rounded-xl hover:bg-white/50 transition-all duration-200 w-full text-left">
-            <div class="w-5 h-5 border border-dashed border-gray-400 rounded-full flex items-center justify-center">
-              <span class="text-xs">+</span>
-            </div>
-            Add new plugin
-          </button>
+      <!-- Integrations (Apps) -->
+      @if (activeApps().length > 0) {
+        <div class="mt-8">
+          <h3 class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Integrations</h3>
+          <div class="space-y-1">
+            @for (app of activeApps(); track app.id) {
+              <a [routerLink]="['/integration', app.id]" 
+                 routerLinkActive="bg-white/80 text-gray-900 shadow-sm"
+                 class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-600 rounded-xl hover:bg-white/50 transition-all duration-200">
+                <div class="w-5 h-5 flex items-center justify-center" [innerHTML]="sanitizer.bypassSecurityTrustHtml(app.icon)"></div>
+                {{ app.name }}
+              </a>
+            }
+            <a routerLink="/settings" class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-500 rounded-xl hover:bg-white/50 transition-all duration-200 w-full text-left">
+              <div class="w-5 h-5 border border-dashed border-gray-400 rounded-full flex items-center justify-center">
+                <span class="text-xs">+</span>
+              </div>
+              Add new plugin
+            </a>
+          </div>
         </div>
-      </div>
+      }
 
-      <!-- Teams -->
-      <div class="mt-8 mb-4">
-        <h3 class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Teams</h3>
-        <div class="space-y-1">
-          <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-600 rounded-xl hover:bg-white/50 transition-all duration-200">
-            <div class="w-2 h-2 rounded-full bg-black"></div>
-            SEO
-          </a>
-          <a href="#" class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-600 rounded-xl hover:bg-white/50 transition-all duration-200">
-            <div class="w-2 h-2 rounded-full bg-gray-400"></div>
-            Marketing
-          </a>
+      <!-- Teams (Plugins) -->
+      @if (activePlugins().length > 0) {
+        <div class="mt-8 mb-4">
+          <h3 class="px-4 text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Teams</h3>
+          <div class="space-y-1">
+            @for (plugin of activePlugins(); track plugin.id) {
+              <a [routerLink]="['/integration', plugin.id]" 
+                 routerLinkActive="bg-white/80 text-gray-900 shadow-sm"
+                 class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-600 rounded-xl hover:bg-white/50 transition-all duration-200">
+                <div class="w-5 h-5 flex items-center justify-center" [innerHTML]="sanitizer.bypassSecurityTrustHtml(plugin.icon)"></div>
+                {{ plugin.name }}
+              </a>
+            }
+          </div>
         </div>
-      </div>
+      }
 
       <!-- Settings -->
       <div class="mt-auto">
-        <a href="#" class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-600 rounded-xl hover:bg-white/50 transition-all duration-200">
+        <a routerLink="/settings" 
+           routerLinkActive="bg-gray-900 text-white shadow-lg" 
+           class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-600 rounded-xl hover:bg-white/50 transition-all duration-200">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="3"></circle>
             <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
@@ -88,7 +89,18 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
   `
 })
 export class SidebarComponent {
-  private sanitizer = inject(DomSanitizer);
+  public sanitizer = inject(DomSanitizer);
+  private authService = inject(AuthService);
+
+  activeApps = computed(() => {
+    const user = this.authService.currentUser();
+    return user?.integrations?.filter(i => i.connected && i.type === 'app') || [];
+  });
+
+  activePlugins = computed(() => {
+    const user = this.authService.currentUser();
+    return user?.integrations?.filter(i => i.connected && i.type === 'plugin') || [];
+  });
 
   menuItems = signal([
     { 
