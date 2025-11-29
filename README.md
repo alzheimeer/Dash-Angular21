@@ -127,7 +127,7 @@ The deployment is configured in `.github/workflows/deploy.yml` and uses:
 - Angular production build
 - GitHub Pages deployment action
 
-## 🛠️ Project Structure.
+## 🛠️ Project Structure
 
 ```
 src/
