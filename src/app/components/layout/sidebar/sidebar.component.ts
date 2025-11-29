@@ -90,7 +90,7 @@ import { AuthService } from '../../../services/auth.service';
 })
 export class SidebarComponent {
   public sanitizer = inject(DomSanitizer);
-  private authService = inject(AuthService);
+  private readonly authService = inject(AuthService);
 
   activeApps = computed(() => {
     const user = this.authService.currentUser();

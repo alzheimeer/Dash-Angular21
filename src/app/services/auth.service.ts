@@ -39,13 +39,13 @@ export interface User {
 })
 export class AuthService {
   // Signal to hold the current user state
-  private _currentUser = signal<User | null>(this.loadUserFromStorage());
+  private readonly _currentUser = signal<User | null>(this.loadUserFromStorage());
 
   // Computed signal to check if user is authenticated
   isAuthenticated = computed(() => !!this._currentUser());
   currentUser = this._currentUser.asReadonly();
 
-  constructor(private router: Router) {}
+  constructor(private readonly router: Router) {}
 
   login(email: string, password: string): boolean {
     // Mock login logic

@@ -80,7 +80,7 @@ import { CommonModule } from '@angular/common';
           </div>
 
           <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 opacity-75">
-            <h4 class="font-bold text-gray-900 text-sm line-through text-gray-400">Q3 Review Meeting</h4>
+            <h4 class="font-bold text-sm line-through text-gray-400">Q3 Review Meeting</h4>
             <div class="mt-3 flex items-center gap-2">
               <span class="px-2 py-0.5 bg-green-100 text-green-700 text-[10px] font-bold rounded uppercase">Done</span>
               <img src="https://i.pravatar.cc/150?u=3" class="w-5 h-5 rounded-full ml-auto" alt="User">
