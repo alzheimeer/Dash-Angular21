@@ -107,7 +107,7 @@ A premium, modern dashboard template built with Angular 21 and Tailwind CSS 4, f
    ```
    Production files will be in the `dist/` directory.
 
-## 🚀 Deployment
+## 🚀 Deployment.
 
 This project uses **GitHub Actions** for automated deployment to GitHub Pages.
 
