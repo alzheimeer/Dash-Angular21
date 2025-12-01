@@ -210,7 +210,7 @@ This is a **premium commercial template**. Unauthorized use, distribution, or mo
 - ❌ Use in open-source projects
 - ❌ Share with third parties
 
-**To purchase a license, contact:** [Your contact information]
+**To purchase a license, contact:** niklaussmauricio@gmail.com
 
 For full license terms, see the [LICENSE](LICENSE) file.
 
