@@ -3,27 +3,44 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { AuthService } from '../../../services/auth.service';
+import { LayoutService } from '../../../services/layout.service';
 
 @Component({
   selector: 'app-sidebar',
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
-    <aside class="w-64 h-full flex flex-col py-6 px-4 glass-panel border-r-0 rounded-r-3xl my-4 ml-4">
-      <!-- Logo -->
-      <div class="flex items-center gap-3 px-4 mb-10">
-        <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white font-bold">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
-          </svg>
+    <!-- Mobile Backdrop -->
+    @if (layoutService.isMobileSidebarOpen()) {
+      <div class="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 md:hidden" (click)="layoutService.closeSidebar()"></div>
+    }
+
+    <aside [class.translate-x-0]="layoutService.isMobileSidebarOpen()"
+           [class.-translate-x-full]="!layoutService.isMobileSidebarOpen()"
+           class="fixed inset-y-0 left-0 z-50 w-64 h-full flex flex-col py-6 px-4 glass-panel border-r-0 rounded-r-3xl my-4 ml-4 transition-transform duration-300 md:translate-x-0 md:static md:h-full md:my-4 md:ml-4 md:z-auto">
+      
+      <!-- Logo & Close Button -->
+      <div class="flex items-center justify-between mb-10 px-4">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 bg-black rounded-lg flex items-center justify-center text-white font-bold">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <span class="text-xl font-bold tracking-tight text-gray-900">iDraft</span>
         </div>
-        <span class="text-xl font-bold tracking-tight text-gray-900">iDraft</span>
+        
+        <!-- Mobile Close Button -->
+        <button (click)="layoutService.closeSidebar()" class="md:hidden p-1 text-gray-500 hover:text-gray-900">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
       </div>
 
       <!-- Navigation -->
       <nav class="flex-1 space-y-1">
         @for (item of menuItems(); track item.label) {
           <a [routerLink]="item.route" 
+             (click)="layoutService.closeSidebar()"
              routerLinkActive="bg-gray-900 text-white shadow-lg" 
              [routerLinkActiveOptions]="{exact: item.exact}"
              class="flex items-center gap-3 px-4 py-3 text-sm font-medium rounded-xl transition-all duration-200 text-gray-600 hover:bg-white/50">
@@ -40,13 +57,14 @@ import { AuthService } from '../../../services/auth.service';
           <div class="space-y-1">
             @for (app of activeApps(); track app.id) {
               <a [routerLink]="['/integration', app.id]" 
+                 (click)="layoutService.closeSidebar()"
                  routerLinkActive="bg-white/80 text-gray-900 shadow-sm"
                  class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-600 rounded-xl hover:bg-white/50 transition-all duration-200">
                 <div class="w-5 h-5 flex items-center justify-center" [innerHTML]="sanitizer.bypassSecurityTrustHtml(app.icon)"></div>
                 {{ app.name }}
               </a>
             }
-            <a routerLink="/settings" class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-500 rounded-xl hover:bg-white/50 transition-all duration-200 w-full text-left">
+            <a routerLink="/settings" (click)="layoutService.closeSidebar()" class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-500 rounded-xl hover:bg-white/50 transition-all duration-200 w-full text-left">
               <div class="w-5 h-5 border border-dashed border-gray-400 rounded-full flex items-center justify-center">
                 <span class="text-xs">+</span>
               </div>
@@ -63,6 +81,7 @@ import { AuthService } from '../../../services/auth.service';
           <div class="space-y-1">
             @for (plugin of activePlugins(); track plugin.id) {
               <a [routerLink]="['/integration', plugin.id]" 
+                 (click)="layoutService.closeSidebar()"
                  routerLinkActive="bg-white/80 text-gray-900 shadow-sm"
                  class="flex items-center gap-3 px-4 py-2 text-sm font-medium text-gray-600 rounded-xl hover:bg-white/50 transition-all duration-200">
                 <div class="w-5 h-5 flex items-center justify-center" [innerHTML]="sanitizer.bypassSecurityTrustHtml(plugin.icon)"></div>
@@ -76,6 +95,7 @@ import { AuthService } from '../../../services/auth.service';
       <!-- Settings -->
       <div class="mt-auto">
         <a routerLink="/settings" 
+           (click)="layoutService.closeSidebar()"
            routerLinkActive="bg-gray-900 text-white shadow-lg" 
            class="flex items-center gap-3 px-4 py-3 text-sm font-medium text-gray-600 rounded-xl hover:bg-white/50 transition-all duration-200">
           <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -91,6 +111,7 @@ import { AuthService } from '../../../services/auth.service';
 export class SidebarComponent {
   public sanitizer = inject(DomSanitizer);
   private readonly authService = inject(AuthService);
+  public layoutService = inject(LayoutService);
 
   activeApps = computed(() => {
     const user = this.authService.currentUser();

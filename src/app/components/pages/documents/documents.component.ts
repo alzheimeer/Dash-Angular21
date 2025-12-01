@@ -7,7 +7,7 @@ import { CommonModule } from '@angular/common';
   imports: [CommonModule],
   template: `
     <div class="h-full flex flex-col gap-6">
-      <div class="flex justify-between items-center">
+      <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 md:gap-0">
         <div>
           <h2 class="text-2xl font-bold text-gray-900">Documents</h2>
           <div class="flex items-center gap-2 text-sm text-gray-500 mt-1">
@@ -17,11 +17,11 @@ import { CommonModule } from '@angular/common';
           </div>
         </div>
         
-        <div class="flex gap-3">
-          <button class="px-4 py-2 bg-white text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors shadow-sm text-sm border border-gray-100">
+        <div class="flex gap-3 w-full md:w-auto">
+          <button class="flex-1 md:flex-none px-4 py-2 bg-white text-gray-700 font-bold rounded-xl hover:bg-gray-50 transition-colors shadow-sm text-sm border border-gray-100 text-center justify-center">
             Create Folder
           </button>
-          <button class="px-4 py-2 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors shadow-lg shadow-black/20 text-sm flex items-center gap-2">
+          <button class="flex-1 md:flex-none px-4 py-2 bg-black text-white font-bold rounded-xl hover:bg-gray-800 transition-colors shadow-lg shadow-black/20 text-sm flex items-center justify-center gap-2">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
             Upload File
           </button>
@@ -31,7 +31,7 @@ import { CommonModule } from '@angular/common';
       <!-- Folders Grid -->
       <div>
         <h3 class="text-sm font-bold text-gray-500 uppercase tracking-wider mb-4">Folders</h3>
-        <div class="grid grid-cols-4 gap-4">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
           @for (folder of folders; track folder.name) {
             <div class="glass-panel rounded-2xl p-4 flex items-center gap-4 hover:bg-white/60 transition-colors cursor-pointer group">
               <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-500 flex items-center justify-center group-hover:bg-blue-100 transition-colors">
@@ -54,9 +54,9 @@ import { CommonModule } from '@angular/common';
             <thead>
               <tr class="text-xs text-gray-400 border-b border-gray-100">
                 <th class="font-bold uppercase tracking-wider py-3 pl-2">Name</th>
-                <th class="font-bold uppercase tracking-wider py-3">Date Modified</th>
-                <th class="font-bold uppercase tracking-wider py-3">Size</th>
-                <th class="font-bold uppercase tracking-wider py-3">Members</th>
+                <th class="font-bold uppercase tracking-wider py-3 hidden md:table-cell">Date Modified</th>
+                <th class="font-bold uppercase tracking-wider py-3 hidden md:table-cell">Size</th>
+                <th class="font-bold uppercase tracking-wider py-3 hidden md:table-cell">Members</th>
                 <th class="font-bold uppercase tracking-wider py-3"></th>
               </tr>
             </thead>
@@ -71,9 +71,9 @@ import { CommonModule } from '@angular/common';
                       <span class="font-medium text-gray-900">{{ file.name }}</span>
                     </div>
                   </td>
-                  <td class="py-3 text-gray-500">{{ file.date }}</td>
-                  <td class="py-3 text-gray-500">{{ file.size }}</td>
-                  <td class="py-3">
+                  <td class="py-3 text-gray-500 hidden md:table-cell">{{ file.date }}</td>
+                  <td class="py-3 text-gray-500 hidden md:table-cell">{{ file.size }}</td>
+                  <td class="py-3 hidden md:table-cell">
                     <div class="flex -space-x-2">
                       @for (member of file.members; track member) {
                         <img [src]="member" class="w-6 h-6 rounded-full border-2 border-white" alt="Member">
