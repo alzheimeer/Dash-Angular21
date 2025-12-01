@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, Validators } from '@angular/forms';
 import { RouterLink } from '@angular/router';
@@ -65,14 +65,20 @@ import { AuthService } from '../../../services/auth.service';
     </p>
   `
 })
-export class LoginComponent {
-  private fb = inject(FormBuilder);
-  private authService = inject(AuthService);
+export class LoginComponent implements OnInit {
+  readonly fb = inject(FormBuilder);
+  readonly authService = inject(AuthService);
 
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required]]
   });
+
+  ngOnInit(): void {
+    // Auto-fill credentials and submit
+    this.loginForm.patchValue({ email: 'fogni@gmail.com', password: '123456' });
+    this.onSubmit();
+  }
 
   onSubmit() {
     if (this.loginForm.valid) {

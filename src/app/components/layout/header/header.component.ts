@@ -34,10 +34,13 @@ import { AuthService } from '../../../services/auth.service';
              <img [src]="currentUser()?.avatar" alt="User" class="w-10 h-10 rounded-full border-2 border-white shadow-md cursor-pointer">
              
              <!-- Dropdown Menu -->
-             <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-1 hidden group-hover:block z-50 animate-in fade-in slide-in-from-top-2">
-               <button (click)="logout()" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
-                 Sign out
-               </button>
+             <!-- Dropdown Menu -->
+             <div class="absolute right-0 top-full pt-2 w-48 hidden group-hover:block z-50 animate-in fade-in slide-in-from-top-2">
+               <div class="bg-white rounded-xl shadow-lg py-1">
+                 <button (click)="logout()" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
+                   Sign out
+                 </button>
+               </div>
              </div>
           </div>
         </div>

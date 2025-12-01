@@ -220,14 +220,15 @@ For full license terms, see the [LICENSE](LICENSE) file.
 
 For support, feature requests, or bug reports:
 
-- Email: [Your support email]
-- Documentation: [Your docs URL]
+[Alzheimeer]
+[Bogota, Colombia]
+[niklaussmauricio@gmail.com]
 
 ## 🔄 Version
 
 **Current Version**: 1.0.0  
-**Angular Version**: 21.x  
-**Last Updated**: November 2024
+**Angular Version**: 21.1  
+**Last Updated**: November 2025
 
 ---
 
