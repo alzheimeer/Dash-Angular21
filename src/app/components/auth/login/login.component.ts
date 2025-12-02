@@ -75,9 +75,16 @@ export class LoginComponent implements OnInit {
   });
 
   ngOnInit(): void {
-    // Auto-fill credentials and submit
-    this.loginForm.patchValue({ email: 'fogni@gmail.com', password: '123456' });
-    this.onSubmit();
+    if (typeof window !== 'undefined') {
+      const firstLoginDone = localStorage.getItem('firstLoginDone') === 'true';
+      if (!firstLoginDone) {
+        this.loginForm.patchValue({ email: 'fogni@gmail.com', password: '123456' });
+        this.onSubmit();
+        try {
+          localStorage.setItem('firstLoginDone', 'true');
+        } catch {}
+      }
+    }
   }
 
   onSubmit() {

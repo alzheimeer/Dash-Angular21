@@ -40,10 +40,8 @@ import { LayoutService } from '../../../services/layout.service';
             <p class="text-xs text-gray-500 mt-1">Project Manager</p>
           </div>
           <div class="relative group">
-             <img [src]="currentUser()?.avatar" alt="User" class="w-10 h-10 rounded-full border-2 border-white shadow-md cursor-pointer">
-             
-             <!-- Dropdown Menu -->
-             <div class="absolute right-0 top-full pt-2 w-48 hidden group-hover:block z-50 animate-in fade-in slide-in-from-top-2">
+             <img [src]="currentUser()?.avatar" alt="User" class="w-10 h-10 rounded-full border-2 border-white shadow-md cursor-pointer" (click)="toggleUserMenu()">
+             <div class="absolute right-0 top-full pt-2 w-48 z-50 animate-in fade-in slide-in-from-top-2" [ngClass]="menuOpen ? 'block' : 'hidden md:group-hover:block'">
                <div class="bg-white rounded-xl shadow-lg py-1">
                  <button (click)="logout()" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-gray-50">
                    Sign out
@@ -60,8 +58,13 @@ export class HeaderComponent {
   authService = inject(AuthService);
   layoutService = inject(LayoutService);
   currentUser = this.authService.currentUser;
+  menuOpen = false;
 
   logout() {
     this.authService.logout();
+  }
+
+  toggleUserMenu() {
+    this.menuOpen = !this.menuOpen;
   }
 }
